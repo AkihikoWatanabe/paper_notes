@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-07-31">
+<paper-list last-updated="2026-11-12">
 <paper-entry>
 <title>[Paper Note] Value Leakage: An LLM's Answers Are Silently Shaped by Its Own Values, Jan Betley+, arXiv'26, 2026.07</title>
 <original-paper-blog-link>https://arxiv.org/abs/2607.14345</original-paper-blog-link>
@@ -415,6 +415,31 @@
 # Summary (by gpt-4o-mini)
 - 多肢選択問題におけるLLMsの性能は選択肢の順序に敏感であり、配置を変えることで最大75%の性能差が見られる。特に、上位選択肢間の不確実性がこの感度を引き起こし、バイアスが影響することを示唆する。最適な配置は、バイアスを増幅させるためにトップ選択肢を両端に置くこと、緩和するためには隣接させることが推奨される。実験を通じて、予測のキャリブレーションにより最大8ポイントの改善が達成された。</issue-body>
 <maintainer-comment-text><p>これはそうだろうなと思っていたけど、ここまで性能に差が出るとは思わなかった。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/fb13c25c-4d76-4c8c-b08a-6491c43f34b9" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>これがもしLLMのバイアスによるもの（2番目の選択肢に正解が多い）の場合、<br>ランダムにソートしたり、平均取ったりしても、そもそもの正解に常にバイアスがかかっているので、<br>結局バイアスがかかった結果しか出ないのでは、と思ってしまう。<br>そうなると、有効なのはone vs. restみたいに、全部該当選択肢に対してyes/noで答えさせてそれを集約させる、みたいなアプローチの方が良いかもしれない。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>The bias of on-policy self-distillation: Why on-policy self-distillation is not the silver bullet for continual learning, baseLABS, 2026.11</title>
+<original-paper-blog-link>https://labs.baseten.co/articles/the-bias-of-on-policy-self-distillation</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/7148</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, Blog, Distillation, Bias, PostTraining, Selected Papers/Blogs, On-Policy, KeyPoint Notes, SelfDistillation, Author Thread-Post</tags>
+<repo-issue-date>2026-11-12</repo-issue-date>
+<issue-body>https://labs.baseten.co/articles/the-bias-of-on-policy-self-distillation</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/baselabs/status/2118858194223317396?a=Xw63dwpReRvRHjeDudo&s=46"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5149" target="_blank" rel="noopener noreferrer">[Paper Note] Self-Distilled RLVR, Chenxu Yang+, arXiv'26, 2026.04</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5027" target="_blank" rel="noopener noreferrer">[Paper Note] Why Does Self-Distillation (Sometimes) Degrade the Reasoning Capability of LLMs?, Jeonghye Kim+, COLM'26, 2026.03</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/7186" target="_blank" rel="noopener noreferrer">[Paper Note] Anti-Self-Distillation for Reasoning RL via Pointwise Mutual Information, Guobin Shen+, arXiv'26, 2026.05</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/7184" target="_blank" rel="noopener noreferrer">[Paper Note] Rethinking Privileged Information in On-Policy Self-Distillation, Samyak Shrestha+, arXiv'26, 2026.08</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/7185" target="_blank" rel="noopener noreferrer">[Paper Note] Privileged Solutions or Context-Induced Teacher Behavior? Dissecting On-Policy Self-Distillation, Yuki Ichihara+, arXiv'26, 2026.08</a>
+</p><p>- OPSDは、密な学習シグナルを提供するが、それらはバイアスを持ったシグナルである。<br>- たとえば、全体的な傾向てして、教師モデルが答えを知っていることによって、Wait,Hmm,のような思考の構造を左右する語彙のスコアを抑制するバイアスがある。（また、一事例としては、数学的な意味は同じだが、2*3ではなく6を出力をする際に尤度に最大の乖離が生じる、なども観測）<br>- これにより、すでに十分な推論能力を備えたモデルに適用すると性能が劣化することが報告されている。<br>- 一方で、推論能力が無いモデルに対して、同モデルの推論モードをオンにしたモデルを教師とするなど、推論能力の低いモデルに対しては効果がある場合がある。<br>- このようなバイアスを除くための研究も行われてきたが、適切な意図をもって実施さされなければ悪影響を及ぼしうる。なぜならば、バイアスを除いて残された学習シグナルが、理想的な推論プロセスを保証するわけではないからである。<br>- たとえば、Contrastive OPSDはそもそも特権情報を保持していることのバイアスを打ち消すために工夫された手法だが、長期間学習されるとモデルが崩壊する。<br>- OPSDは万能な手法ではなく、システムプロンプトやConstitutionのように、汎用的に利用されることが期待される文脈全体の振る舞いを蒸留するような用途に適している。</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
