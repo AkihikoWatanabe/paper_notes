@@ -1,5 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-11-24">
+<paper-list last-updated="2026-11-26">
+<paper-entry>
+<title>[Paper Note] Generalized Tensor Parallelism: Powering Trillion-Parameter LLM Training at 10+ EFLOP_s, Shiqing Fan+, arXiv'26, 2026.11</title>
+<original-paper-blog-link>https://arxiv.org/abs/2611.32057</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/7247</repo-issue-link>
+<tags>EfficiencyImprovement, Pretraining, NLP, LanguageModel, read-later, Selected Papers/Blogs, Parallelism</tags>
+<repo-issue-date>2026-11-26</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2611.32057
+# Authors
+  - Shiqing Fan
+  - Deepak Narayanan
+  - Jimmy Zhang
+  - Jiangfei Duan
+  - Prajwal Singhania
+  - Haoran Zhang
+  - Wanying Wang
+  - Philip Monk
+  - Xuwen Chen
+  - Jared Casper
+  - Jun Yang
+  - Mohammad Shoeybi
+  - Bryan Catanzaro
+  - Vijay Anand Korthikanti
+# Abstract
+  - Pretraining state-of-the-art large language models (LLMs) with up to trillions of parameters is memory- and compute-intensive. Existing parallelization schemes compromise on either per-GPU memory or throughput: data parallelism replicates parameters; tensor parallelism and fully sharded data parallelism (FSDP) add communication of activations and parameters, respectively, to every microbatch; and pipeline parallelism leaves GPUs idle while the pipeline fills and drains. We show that, for linear layers, five commonly used parallelisms (data, tensor, sequence, context parallelism and FSDP) are special cases of one framework, generalized tensor parallelism (GTP), in which each layer's parameters and activations are partitioned and either can be re-materialized with an all-gather before use. In GTP, a parameter all-gather is an optional preprocessing step on one input of a matrix multiplication (GEMM), whereas FSDP implementations typically treat it as a step before an entire Transformer block, which can increase memory footprint and delay GEMMs. The GTP view lets us schedule all-gathers per GEMM rather than per block, issuing each early enough to hide its communication but late enough to limit memory. Our implementation is open source at https://github.com/NVIDIA/Megatron-LM; with it, an internal 2T-parameter mixture-of-experts (MoE) model reaches \textbf{13.0 model EFLOP/s} (exaFLOP/s) on 12,288 GB300 GPUs with 98\% weak-scaling efficiency, and runs with 1M-token sequences on 512 GPUs. On 256--1,024 GPUs, our implementation achieves \textbf{1.05--1.55$\times$ the throughput of Megatron-FSDP} across three MoE models and \textbf{1.27--1.31$\times$ that of a tuned 3D-parallel recipe with pipeline parallelism} on a DeepSeek-V4-Pro proxy model.
+# Translation (by gpt-5.6-luna)
+- 数兆個に及ぶパラメータを持つ最先端の大規模言語モデル（LLM）の事前学習は、メモリと計算資源を大量に必要とする。既存の並列化手法は、GPUごとのメモリ使用量またはスループットのいずれかを犠牲にしている。データ並列化ではパラメータを複製し、テンソル並列化と完全シャードデータ並列化（FSDP）では、それぞれすべてのマイクロバッチに対してアクティベーションとパラメータの通信が追加される。また、パイプライン並列化では、パイプラインの充填と排出の間、GPUがアイドル状態になる。
+
+本研究では、線形層において広く用いられている5種類の並列化手法（データ並列化、テンソル並列化、シーケンス並列化、コンテキスト並列化、FSDP）が、一般化テンソル並列化（GTP）という単一のフレームワークの特殊例であることを示す。GTPでは、各層のパラメータとアクティベーションを分割し、必要に応じて、使用前にオールギャザーによっていずれかを再構成できる。GTPにおいて、パラメータのオールギャザーは行列乗算（GEMM）の一方の入力に対する任意の前処理ステップである。一方、FSDPの実装では通常、これをTransformerブロック全体の前に実行するステップとして扱うため、メモリフットプリントが増大し、GEMMの開始が遅れる可能性がある。
+
+GTPの考え方により、オールギャザーをブロック単位ではなくGEMM単位でスケジューリングできる。これにより、通信を隠蔽できるよう十分早く各オールギャザーを発行しつつ、メモリ使用量を抑えられる程度には遅く発行することが可能になる。本実装は https://github.com/NVIDIA/Megatron-LM でオープンソースとして公開されている。この実装を用いることで、社内の2兆パラメータの混合専門家（MoE）モデルは、12,288基のGB300 GPU上で**13.0モデルEFLOP/s**（exaFLOP/s）を達成し、弱スケーリング効率98%を実現した。また、512基のGPU上で100万トークン長のシーケンスを実行できる。256～1,024基のGPUにおいて、本実装は3種類のMoEモデル全体でMegatron-FSDPの**1.05～1.55倍のスループット**を達成し、さらにDeepSeek-V4-Proの代理モデルでは、パイプライン並列化を用いた調整済み3次元並列化構成の**1.27～1.31倍**のスループットを実現した。
+# Summary (by gpt-5.6-luna)
+- LLM事前学習におけるメモリ使用量と通信・計算効率の課題に対し、データ並列化、テンソル並列化、シーケンス並列化、コンテキスト並列化、FSDPを統一するGeneralized Tensor Parallelism（GTP）を提案。  
+各層のパラメータとアクティベーションを分割し、GEMM単位でオールギャザーをスケジューリングすることで、通信を隠蔽しつつメモリ使用量を削減。  
+2兆パラメータのMoEモデルで12,288基のGPU上に13.0モデルEFLOP/sと98%の弱スケーリング効率を達成し、Megatron-FSDPや既存の3次元並列化構成を上回るスループットを実現。</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/crazymlguy/status/2125747999666291168?a=WQ8VJ-TJYkqeRXbjsy8&s=46"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] Jeveration: System One Models Now Generate, Yuhe Liu+, arXiv'26, 2026.11</title>
 <original-paper-blog-link>https://arxiv.org/abs/2611.24738</original-paper-blog-link>
